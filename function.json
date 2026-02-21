@@ -1,0 +1,111 @@
+{
+  "type": "vector.function",
+  "output_length": {
+    "$starlark": "len(input)"
+  },
+  "input_split": {
+    "$starlark": "[[item] for item in input]"
+  },
+  "input_merge": {
+    "$starlark": "[item for sublist in input for item in sublist]"
+  },
+  "input_schema": {
+    "type": "array",
+    "description": "A collection of cat photographs to rank by spontaneous aliveness.",
+    "minItems": 2,
+    "items": {
+      "type": "image",
+      "description": "A cat photograph to evaluate for spontaneous aliveness."
+    }
+  },
+  "tasks": [
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "I'm building a photo wall of cats caught in fleeting, split-second moments — the kind of photo where you can feel that the shutter clicked just in time, where the cat was mid-leap or mid-pounce or frozen in a posture so precarious it could only have lasted a fraction of a second. Show me the perfect photo for this wall. I want to feel the temporal urgency — the electricity of a moment rescued from the edge of disappearing."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[item] for item in input]"
+      },
+      "output": {
+        "$jmespath": "output.scores"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "You are a photography curator who values raw, unpolished authenticity over technical perfection. You believe the best cat photographs are grab shots — reactive, imperfect, and honest. You prefer images where the framing itself tells the story of a photographer who had no time to compose: off-center subjects, clipped edges, awkward angles, and imperfect focus. Deliberate composition — rule-of-thirds placement, carefully chosen depth of field, flattering angles — is a sign that a photo was constructed rather than caught."
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Send me a cat photo that looks like it was snapped on pure reflex — no time to frame it properly, no time to check the composition. I want to see the beautiful imperfection of a photographer reacting to a moment rather than designing an image."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[item] for item in input]"
+      },
+      "output": {
+        "$jmespath": "output.scores"
+      }
+    },
+    {
+      "type": "vector.completion",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "Can you show me a really authentic cat photo? Something that feels genuinely real."
+            }
+          ]
+        },
+        {
+          "role": "assistant",
+          "content": [
+            {
+              "type": "text",
+              "text": "Sure! What kind of authenticity are you looking for? Are you interested in the cat's expression, the action being captured, or the setting and environment?"
+            }
+          ]
+        },
+        {
+          "role": "user",
+          "content": [
+            {
+              "type": "text",
+              "text": "The setting. I want a photo where the background tells you it was taken in a real, lived-in home — not a studio, not a styled scene. I want to see rumpled blankets, cluttered shelves, harsh natural lighting, the ordinary mess of everyday life with a cat. The more the environment feels unedited and genuine, the better. No curated backdrops, no tidied-up rooms, no staged props."
+            }
+          ]
+        }
+      ],
+      "responses": {
+        "$starlark": "[[item] for item in input]"
+      },
+      "output": {
+        "$jmespath": "output.scores"
+      }
+    }
+  ],
+  "description": "Ranks cat photographs by spontaneous aliveness — how much each image feels like a fleeting moment seized on reflex rather than a planned composition. Evaluates temporal urgency, uncomposed framing, and environmental authenticity to surface candid, imperfect, real moments over polished productions."
+}
